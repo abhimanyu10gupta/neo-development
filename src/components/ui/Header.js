@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from 'react';
-import { AppBar, Toolbar, Tabs, Tab, Button } from '@mui/material';
+import React, { Fragment, useState, useEffect } from 'react';
+import { AppBar, Toolbar, Tabs, Tab, Button, Box } from '@mui/material';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { styled } from '@mui/system';
+import { Link } from 'react-router-dom';
 
 import logo from '../../assets/logo.svg';
 
@@ -25,40 +26,67 @@ const MyDiv = styled('div')(({ theme }) => ({
 }));
 
 const Image = styled('img')({
-  height: '7em',
+  height: '8em',
 });
 
 const StyledTab = styled(Tab)(({ theme }) => ({
   ...theme.typography.tab,
   minWidth: 10,
   marginLeft: '25px',
-  //   color: 'white',
 }));
 
 const Header = () => {
-  const [value, setValue] = useState('home');
+  const [value, setValue] = useState(0);
 
   const handleChange = (e, value) => {
     setValue(value);
   };
+
+  useEffect(() => {
+    if (window.location.pathname === '/' && value !== 0) {
+      setValue(0);
+    } else if (window.location.pathname === '/services' && value !== 1) {
+      setValue(1);
+    } else if (window.location.pathname === '/revolution' && value !== 2) {
+      setValue(2);
+    } else if (window.location.pathname === '/about' && value !== 3) {
+      setValue(3);
+    } else if (window.location.pathname === '/contact' && value !== 4) {
+      setValue(4);
+    } else if (window.location.pathname === '/estimate' && value !== 5) {
+      setValue(5);
+    }
+  }, [value]);
 
   return (
     <Fragment>
       <ElevationScroll>
         <AppBar position='fixed'>
           <Toolbar disableGutters>
-            <Image alt='company logo' src={logo} />
+            <Button
+              sx={{ padding: 0 }}
+              component={Link}
+              to='/'
+              onClick={() => setValue(0)}
+              disableRipple
+            >
+              <Image alt='company logo' src={logo} />
+            </Button>
             <Tabs
               value={value}
               onChange={handleChange}
               textColor='inherit'
               sx={{ marginLeft: 'auto' }}
             >
-              <StyledTab value='home' label='Home' />
-              <StyledTab label='Services' />
-              <StyledTab label='The Revolution' />
-              <StyledTab label='About us' />
-              <StyledTab label='Contact Us' />
+              <StyledTab component={Link} to='/' label='Home' />
+              <StyledTab component={Link} to='/services' label='Services' />
+              <StyledTab
+                component={Link}
+                to='/revolution'
+                label='The Revolution'
+              />
+              <StyledTab component={Link} to='/about' label='About us' />
+              <StyledTab component={Link} to='/contact' label='Contact Us' />
             </Tabs>
             <Button
               variant='contained'
