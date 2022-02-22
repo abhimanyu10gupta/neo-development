@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { AppBar, Toolbar, Typography, Tabs, Tab } from '@mui/material';
+import React, { Fragment, useState } from 'react';
+import { AppBar, Toolbar, Tabs, Tab, Button } from '@mui/material';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { styled } from '@mui/system';
 
@@ -19,12 +19,6 @@ function ElevationScroll(props) {
   });
 }
 
-// const useStyles = makeStyles((theme) => ({
-//   toolbarMargin: {
-//     ...theme.mixins.Toolbar,
-//   },
-// }));
-
 const MyDiv = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
   marginBottom: '3em',
@@ -38,10 +32,15 @@ const StyledTab = styled(Tab)(({ theme }) => ({
   ...theme.typography.tab,
   minWidth: 10,
   marginLeft: '25px',
+  //   color: 'white',
 }));
 
 const Header = () => {
-  //   const classes = useStyles();
+  const [value, setValue] = useState('home');
+
+  const handleChange = (e, value) => {
+    setValue(value);
+  };
 
   return (
     <Fragment>
@@ -49,14 +48,31 @@ const Header = () => {
         <AppBar position='fixed'>
           <Toolbar disableGutters>
             <Image alt='company logo' src={logo} />
-            <Tabs sx={{ marginLeft: 'auto' }}>
-              <StyledTab label='Home' />
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor='inherit'
+              sx={{ marginLeft: 'auto' }}
+            >
+              <StyledTab value='home' label='Home' />
               <StyledTab label='Services' />
               <StyledTab label='The Revolution' />
               <StyledTab label='About us' />
               <StyledTab label='Contact Us' />
             </Tabs>
-            {/* <Typography variant='h3'>Neo Development</Typography> */}
+            <Button
+              variant='contained'
+              color='secondary'
+              sx={(theme) => ({
+                ...theme.typography.estimate,
+                borderRadius: '50px',
+                marginLeft: '50px',
+                marginRight: '25px',
+                height: '45px',
+              })}
+            >
+              Free Estimate
+            </Button>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
